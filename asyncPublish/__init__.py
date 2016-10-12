@@ -1,1 +1,1 @@
-import asyncPublish.asyncPublish
+from .asyncPublish import asyncPublish
