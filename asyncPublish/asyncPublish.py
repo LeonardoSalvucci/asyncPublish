@@ -2,7 +2,7 @@ from time import sleep
 
 import pika
 
-class asyncPublish():
+class asyncPublish:
 
     def __init__(self, host=None, port=None, usr=None, password=None, vHost=None):
 
