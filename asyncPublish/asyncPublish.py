@@ -4,32 +4,12 @@ import pika
 
 class asyncPublish:
 
-    def __init__(self, host=None, port=None, usr=None, password=None, vHost=None):
-
-        if host:
-            self.host = host
-        else:
-            self.host = 'localhost'
-
-        if port:
-            self.port = port
-        else:
-            self.port = 5672
-
-        if usr:
-            self.usr = usr
-        else:
-            self.usr = 'administrador'
-
-        if password:
-            self.password = password
-        else:
-            self.password = 'sr650'
-
-        if vHost:
-            self.vHost = vHost
-        else:
-            self.vHost = ''
+    def __init__(self, host='localhost', port=5672, usr='guest', password='guest', vHost='/'):
+        self.host = host
+        self.port = port
+        self.usr = usr
+        self.password = password
+        self.vHost = vHost
 
     def publish(self, message, exchange, queues):
         i=0
@@ -55,11 +35,19 @@ class asyncPublish:
                 )
 
                 for queue in queues:
-                    channel.queue_declare(
-                        queue=queue,
-                        durable=True,
-                    )
-                    channel.queue_bind(exchange=exchange,queue=queue)
+                    if queue.__class__ == str:
+                        channel.queue_declare(
+                            queue=queue,
+                            durable=True,
+                        )
+                    elif queue.__class__ == dict:
+                        channel.queue_declare(
+                            queue=queue['name'],
+                            durable=True,
+                            arguments=queue['arguments'],
+                        )
+
+                    channel.queue_bind(exchange=exchange,queue=queue,routing_key='')
 
                 # Turn on delivery confirmations
                 channel.confirm_delivery()
