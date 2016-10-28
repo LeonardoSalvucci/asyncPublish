@@ -40,14 +40,14 @@ class asyncPublish:
                             queue=queue,
                             durable=True,
                         )
+                        channel.queue_bind(exchange=exchange, queue=queue, routing_key='')
                     elif queue.__class__ == dict:
                         channel.queue_declare(
                             queue=queue['name'],
                             durable=True,
                             arguments=queue['arguments'],
                         )
-
-                    channel.queue_bind(exchange=exchange,queue=queue,routing_key='')
+                        channel.queue_bind(exchange=exchange, queue=queue['name'], routing_key='')
 
                 # Turn on delivery confirmations
                 channel.confirm_delivery()
