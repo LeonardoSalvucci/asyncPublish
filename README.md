@@ -9,10 +9,11 @@ class asyncPublish:
         exchange (string)
         queues (list)
         
-            queue (string)
+            queue (list of strings for one or multiple queues)
             queue (dict -> {'name':'queueName',
                             'arguments': {
                                 'x-message-ttl':	        3000,
                                 'x-dead-letter-exchange':	'Prueba',
                              }
                            }
+            queue (both list of strings and dict)
